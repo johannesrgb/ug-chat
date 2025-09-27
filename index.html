@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UG CHAT — Blue & White Campus Social</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Theme color for browser UI -->
+  <meta name="theme-color" content="#0A66C2">
+
+  <style>
+    :root{
+      --blue:#0A66C2;      /* primary UG CHAT blue */
+      --blue-600:#0957a7;
+      --blue-50:#eef6ff;
+      --white:#ffffff;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --bg:#f5f7fb;
+      --gold:#cfae2e;      /* premium accent */
+      --danger:#e11d48;
+      --success:#16a34a;
+      --radius:14px;
+      --shadow:0 10px 30px rgba(10,102,194,.15);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,var(--blue-50),#fff 220px) fixed;
+    }
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.85);
+      backdrop-filter:saturate(160%) blur(10px);
+      border-bottom:1px solid #e5e9f2;
+    }
+    .nav{
+      max-width:1100px;margin:auto;
+      display:flex;align-items:center;gap:16px;
+      padding:12px 20px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+      font-weight:800;color:var(--blue);letter-spacing:.3px;
+    }
+    .logo{
+      width:40px;height:40px;border-radius:10px;
+      background:
+        radial-gradient(circle at 30% 30%, #fff 0 18px, transparent 19px),
+        radial-gradient(circle at 70% 70%, #fff 0 18px, transparent 19px),
+        var(--blue);
+      box-shadow:inset 0 0 0 3px #fff, 0 4px 10px rgba(10,102,194,.35);
+    }
+    .tabs{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+    .tab{
+      appearance:none;border:0;background:transparent;color:var(--muted);
+      font-weight:600;padding:10px 14px;border-radius:10px;cursor:pointer;
+    }
+    .tab.active{color:var(--blue);background:var(--blue-50)}
+    .cta-premium{
+      margin-left:6px;background:linear-gradient(90deg,var(--gold),#f6d25a);
+      color:#2f2300;border:0;font-weight:800;padding:10px 14px;border-radius:10px;cursor:pointer;
+      box-shadow:0 4px 12px rgba(207,174,46,.35);
+    }
+    .shell{
+      max-width:1100px;margin:18px auto;padding:0 20px 60px;
+      display:grid;grid-template-columns:1.2fr .8fr;gap:20px;
+    }
+    @media (max-width:980px){ .shell{grid-template-columns:1fr} }
+    .card{
+      background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+      overflow:hidden;border:1px solid #e7eef7;
+    }
+    .card>header{
+      position:unset;background:linear-gradient(90deg,var(--blue),var(--blue-600));color:#fff;
+      border:0;padding:16px 18px;
+    }
+    .card>header h3{margin:0;font-size:1.05rem;letter-spacing:.2px}
+    .pad{padding:16px 18px}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .row.right{justify-content:flex-end}
+    input[type="text"], input[type="tel"], input[type="number"], textarea, select{
+      width:100%;padding:12px 14px;border-radius:12px;border:1px solid #d9e2ee;background:#fbfdff;
+      outline:none;transition:border .2s;
+    }
+    textarea{min-height:80px;resize:vertical}
+    input:focus, textarea:focus{border-color:var(--blue)}
+    .btn{
+      background:var(--blue);color:#fff;border:0;border-radius:12px;padding:10px 14px;
+      font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(10,102,194,.25);
+    }
+    .btn:disabled { background: var(--muted); cursor: not-allowed; }
+    .btn.alt{background:#e2ecf7;color:#0a3b6d;font-weight:700}
+    .btn.ghost{background:transparent;color:var(--blue);border:1px solid var(--blue)}
+    .btn.danger{background:var(--danger)}
+    .btn.success{background:var(--success)}
+    .grid{display:grid;gap:14px}
+    .post{
+      display:grid;gap:10px;padding:14px;border:1px solid #eef3fb;border-radius:14px;background:#fff;
+    }
+    .post .meta{display:flex;gap:10px;align-items:center}
+    .avatar{
+      width:38px;height:38px;border-radius:50%;
+      background:linear-gradient(135deg,#cfe7ff,#adcfff);
+      border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.08);
+      flex:0 0 auto;display:grid;place-items:center;font-weight:800;color:#0a3b6d;
+    }
+    .hero{
+      position:relative;height:220px;background:#0b4d91;color:#fff;display:grid;
+      grid-template-columns:1fr;place-items:center;text-align:center;overflow:hidden;
+    }
+    .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.25;filter:saturate(115%) contrast(105%)}
+    .hero .title{position:relative;z-index:1}
+    .badge-premium{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#7a6005;border-radius:999px;padding:6px 10px;font-weight:800;border:1px solid #efd888}
+    .feed-form{display:grid;gap:10px}
+    .chipbar{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{
+      padding:8px 10px;background:#eef6ff;border:1px solid #ddecff;color:#0a3b6d;border-radius:999px;font-weight:700;font-size:.85rem;cursor:pointer;
+    }
+    .chip.active{background:var(--blue);border-color:var(--blue);color:#fff}
+    .chat-wrap{display:grid;grid-template-rows:auto 1fr auto;height:480px;border:1px solid #e8eef8;border-radius:12px;overflow:hidden}
+    .chat-messages{padding:14px;background:#f7fbff;overflow:auto}
+    .bubble{max-width:75%;margin:8px 0;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid #e7eef7}
+    .bubble.me{margin-left:auto;background:#e9f3ff;border-color:#d3e7ff}
+    .bubble.ai{background:var(--blue-50); border-color: #d3e7ff;} /* AI bubble style */
+    .bubble.loading { display: flex; align-items: center; gap: 8px; }
+    .dot-flashing { position: relative; width: 6px; height: 6px; border-radius: 5px; background-color: var(--blue); color: var(--blue); animation: dot-flashing 1s infinite linear alternate; animation-delay: .5s; }
+    .dot-flashing::before, .dot-flashing::after { content: ''; display: inline-block; position: absolute; top: 0; }
+    .dot-flashing::before { left: -10px; width: 6px; height: 6px; border-radius: 5px; background-color: var(--blue); color: var(--blue); animation: dot-flashing 1s infinite alternate; animation-delay: 0s; }
+    .dot-flashing::after { left: 10px; width: 6px; height: 6px; border-radius: 5px; background-color: var(--blue); color: var(--blue); animation: dot-flashing 1s infinite alternate; animation-delay: 1s; }
+    @keyframes dot-flashing { 0% { background-color: var(--blue); } 50%, 100% { background-color: rgba(10,102,194,.2); } }
+    .call-io{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;font-size:.82rem}
+    .foot{
+      margin-top:20px;font-size:.85rem;color:#5b6b86;
+    }
+    .foot a{color:#0a3b6d;text-decoration:none;border-bottom:1px dotted #89aadd}
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .gallery img{width:100%;height:86px;border-radius:10px;object-fit:cover;border:1px solid #e3ecf8}
+    .hidden{display:none !important}
+
+    /* Custom Modal Styles */
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="logo" aria-hidden="true"></div>
+      <div class="brand">UG CHAT</div>
+      <div class="chipbar" style="margin-left:8px">
+        <span class="chip" data-tab="feed">Feed</span>
+        <span class="chip" data-tab="ai-chat">AI Assistant</span>
+        <span class="chip" data-tab="chat">Chat</span>
+        <span class="chip" data-tab="calls">Calls</span>
+        <span class="chip" data-tab="profile">Profile</span>
+      </div>
+      <button class="cta-premium" id="openPremium">Go Premium — GHS 1/mo</button>
+    </div>
+  </header>
+
+  <!-- HERO with University of Ghana image -->
+  <section class="hero card" aria-label="Campus banner">
+    <img id="heroImg" alt="Balme Library, University of Ghana (CC BY/CC BY-SA images)"
+      src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Balme_Library_at_University_of_Ghana_-_Legon.jpg"
+      onerror="this.onerror=null;this.src='https://placehold.co/1100x220/0A66C2/FFFFFF?text=UG+Campus'">
+    <div class="title">
+      <h1 style="margin:.1rem 0 0">Welcome to <span style="color:#fffbcc">UG CHAT</span></h1>
+      <div id="premiumBadge" class="badge-premium hidden">🌟 Premium Active</div>
+    </div>
+  </section>
+
+  <main class="shell">
+    <!-- LEFT: FEED + CHAT -->
+    <section class="grid">
+      <!-- FEED -->
+      <article id="tab-feed" class="card">
+        <header><h3>Campus Feed</h3></header>
+        <div class="pad">
+          <form id="feedForm" class="feed-form">
+            <div class="row">
+              <input type="text" id="postText" placeholder="Share what's happening around Legon…">
+              <input type="file" id="postImage" accept="image/*" style="flex:1;">
+              <button class="btn" type="submit">Post</button>
+            </div>
+          </form>
+          <div class="gallery" aria-label="UG Campus gallery">
+            <!-- Wikimedia Commons images (UG) -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Balme_Library_at_University_of_Ghana_-_Legon.jpg" alt="Balme Library (CC BY 2.0)" onerror="this.onerror=null;this.src='https://placehold.co/100x86/0A66C2/FFFFFF?text=UG'">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Entrance_to_Commonwealth_Hall_Legon_4.jpg" alt="Commonwealth Hall (CC BY-SA 4.0)" onerror="this.onerror=null;this.src='https://placehold.co/100x86/0A66C2/FFFFFF?text=UG'">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/Balme_Library.JPG" alt="Balme Library building (CC BY-SA 3.0)" onerror="this.onerror=null;this.src='https://placehold.co/100x86/0A66C2/FFFFFF?text=UG'">
+          </div>
+          <hr style="border:0;border-top:1px solid #eaeef6;margin:16px 0">
+          <div id="posts" class="grid" aria-live="polite"></div>
+        </div>
+      </article>
+
+      <!-- AI CHAT (NEW) -->
+      <article id="tab-ai-chat" class="card hidden">
+        <header><h3>AI Assistant</h3></header>
+        <div class="pad">
+            <div class="chat-wrap">
+                <div class="pad muted" style="border-bottom:1px solid #e8eef8">Ask me anything about UG!</div>
+                <div id="aiMessages" class="chat-messages"></div>
+                <form id="aiChatForm" class="row pad" autocomplete="off">
+                    <input id="aiMessageInput" type="text" placeholder="Type a message…">
+                    <button class="btn" type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+      </article>
+
+      <!-- CHAT -->
+      <article id="tab-chat" class="card hidden">
+        <header><h3>Student Chat</h3></header>
+        <div class="pad">
+          <div class="row">
+            <select id="roomSelect" style="max-width:220px">
+              <option>General</option>
+              <option>Study Group</option>
+              <option>Marketplace</option>
+              <option>Hall Talk</option>
+            </select>
+            <input type="text" id="chatName" placeholder="Your display name (e.g., Akosua, Kofi)">
+          </div>
+          <div class="chat-wrap" style="margin-top:10px">
+            <div id="chatHeader" class="pad muted" style="border-bottom:1px solid #e8eef8">Room: <b>General</b></div>
+            <div id="messages" class="chat-messages"></div>
+            <form id="chatForm" class="row pad" autocomplete="off">
+              <input id="messageInput" type="text" placeholder="Type a message…">
+              <button class="btn" type="submit">Send</button>
+              <button class="btn alt" type="button" id="clearChat">Clear</button>
+            </form>
+          </div>
+        </div>
+      </article>
+
+      <!-- CALLS -->
+      <article id="tab-calls" class="card hidden">
+        <header><h3>Calls (Voice)</h3></header>
+        <div class="pad grid">
+          <p class="muted">Start a browser‑to‑browser call using WebRTC. Share the <b>Offer</b> text with your friend, then paste their <b>Answer</b>. Works without any server (copy‑paste signaling) ✔️</p>
+          <div class="row">
+            <button id="btnStartMedia" class="btn">Enable Microphone</button>
+            <button id="btnEnd" class="btn danger" disabled>End Call</button>
+          </div>
+          <div class="row">
+            <audio id="localAudio" autoplay muted></audio>
+            <audio id="remoteAudio" autoplay></audio>
+          </div>
+          <div class="call-io">
+            <div>
+              <h4>Create Offer</h4>
+              <div class="row">
+                <button class="btn" id="btnCreateOffer">Create</button>
+                <button class="btn ghost" id="btnCopyOffer">Copy</button>
+              </div>
+              <textarea id="offerOut" class="mono" placeholder="Your SDP offer will appear here…" readonly></textarea>
+              <textarea id="answerIn" class="mono" placeholder="Paste friend's SDP answer here…"></textarea>
+              <div class="row right"><button class="btn success" id="btnSetAnswer">Connect</button></div>
+            </div>
+            <div>
+              <h4>Accept Offer</h4>
+              <textarea id="offerIn" class="mono" placeholder="Paste friend's SDP offer here…"></textarea>
+              <div class="row">
+                <button class="btn" id="btnCreateAnswer">Create Answer</button>
+                <button class="btn ghost" id="btnCopyAnswer">Copy</button>
+              </div>
+              <textarea id="answerOut" class="mono" placeholder="Your SDP answer will appear here…" readonly></textarea>
+            </div>
+          </div>
+
+          <hr style="border:0;border-top:1px solid #eaeef6">
+          <h4>Mobile Call (fallback)</h4>
+          <div class="row">
+            <input type="tel" id="telNumber" placeholder="Enter phone number e.g., 0501234567">
+            <a id="telLink" class="btn ghost" href="#">Call via phone app</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- RIGHT: PROFILE / PREMIUM -->
+    <aside>
+      <article id="tab-profile" class="card">
+        <header><h3>Your Profile</h3></header>
+        <div class="pad grid">
+          <div class="row">
+            <img src="https://api.dicebear.com/8.x/initials/svg?seed=UG&backgroundType=gradientLinear&fontFamily=Helvetica&fontWeight=800"
+                 alt="Avatar" style="width:66px;height:66px;border-radius:50%;border:3px solid #fff;box-shadow:0 4px 14px rgba(10,102,194,.25)">
+            <div>
+              <div style="font-weight:800;font-size:1.1rem" id="profName">Guest</div>
+              <div class="muted" id="profStatus">Free · GHS 1/mo to upgrade</div>
+            </div>
+          </div>
+          <label>Display Name</label>
+          <input type="text" id="displayName" placeholder="Enter your name">
+          <div class="row">
+            <button class="btn" id="saveProfile">Save</button>
+            <button class="btn alt" id="logout">Logout</button>
+          </div>
+          <hr style="border:0;border-top:1px solid #eaeef6">
+          <h4>Premium</h4>
+          <p class="muted">Unlock perks (gold badge, larger uploads, priority reactions) for just <b>GHS 1</b> per month.</p>
+          <div class="row">
+            <button class="btn" id="openPremium2">Subscribe</button>
+            <button class="btn ghost hidden" id="cancelPremium">Cancel</button>
+          </div>
+          <div id="premiumInfo" class="muted"></div>
+          <div class="foot" style="margin-top:18px">
+            <b>Image credits</b><br>
+            • Balme Library photo(s): CC BY 2.0 / CC BY‑SA via Wikimedia Commons. See attributions below.
+          </div>
+        </div>
+      </article>
+
+      <!-- INFO / ABOUT -->
+      <article class="card" style="margin-top:16px">
+        <header><h3>About UG CHAT</h3></header>
+        <div class="pad">
+          <p>Built for University of Ghana students to connect, share, and collaborate. This demo runs entirely in your browser using <b>localStorage</b> for data.</p>
+          <ul class="muted">
+            <li>Blue &amp; white design</li>
+            <li>Posts with images</li>
+            <li>Room‑based chat</li>
+            <li>Peer‑to‑peer voice calls (WebRTC)</li>
+            <li>Premium: GHS 1/month</li>
+          </ul>
+        </div>
+      </article>
+    </aside>
+  </main>
+
+  <!-- PREMIUM MODAL -->
+  <dialog id="premiumModal" style="border:0;border-radius:16px;max-width:520px;width:96%;box-shadow:var(--shadow);padding:0">
+    <div class="card" style="border:0;border-radius:16px">
+      <header><h3>Go Premium — GHS 1 / month</h3></header>
+      <div class="pad grid">
+        <p class="muted">Support the community &amp; unlock perks. This demo simulates checkout and activates Premium on this device for 30 days.</p>
+        <label>Payment Method (demo)</label>
+        <select id="payMethod">
+          <option>Mobile Money</option>
+          <option>Card</option>
+        </select>
+        <div class="row">
+          <input id="payNumber" type="text" placeholder="Mobile number or card (demo)">
+          <button class="btn" id="confirmPay">Pay GHS 1</button>
+          <button class="btn ghost" id="closePremium">Close</button>
+        </div>
+        <div id="payMsg" class="muted"></div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- CONFIRMATION MODAL (NEW) -->
+  <dialog id="confirmModal" style="border:0;border-radius:16px;max-width:400px;width:90%;box-shadow:var(--shadow);padding:0">
+      <div class="card" style="border:0;border-radius:16px">
+          <header><h3 id="confirmTitle">Are you sure?</h3></header>
+          <div class="pad grid">
+              <p id="confirmText" class="muted">This action cannot be undone.</p>
+              <div class="row right">
+                  <button id="confirmCancel" class="btn alt">Cancel</button>
+                  <button id="confirmOk" class="btn danger">Confirm</button>
+              </div>
+          </div>
+      </div>
+  </dialog>
+
+  <footer class="foot" style="max-width:1100px;margin:20px auto 60px;padding:0 20px">
+    <div>
+      Campus images used under Creative Commons:
+      <ul>
+        <li>Balme Library at University of Ghana — CC BY 2.0 (Ralph Daily). Wikimedia Commons. </li>
+        <li>Entrance to Commonwealth Hall, Legon — CC BY‑SA 4.0 (Masssly). Wikimedia Commons. </li>
+        <li>Balme Library (Legon Campus) — CC BY‑SA 3.0 (Rtevels). Wikimedia Commons. </li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    /* ========= PWA Service Worker Registration ========= */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, err => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+
+    /* ========= Utilities & State ========= */
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const store = {
+      get(k, fallback){ try{ return JSON.parse(localStorage.getItem(k)) ?? fallback }catch{ return fallback } },
+      set(k,v){ localStorage.setItem(k, JSON.stringify(v)) }
+    };
+    const today = () => new Date().toISOString();
+    const uid = () => Math.random().toString(36).slice(2,9);
+
+    const STATE = {
+      user: store.get('ug.user', { name:'Guest', premiumUntil:null }),
+      posts: store.get('ug.posts', []),
+      chat: store.get('ug.chat', { General:[], "Study Group":[], Marketplace:[], "Hall Talk":[] }),
+      aiChat: store.get('ug.aiChat', [])
+    };
+
+    function persist(){
+      store.set('ug.user', STATE.user);
+      store.set('ug.posts', STATE.posts);
+      store.set('ug.chat', STATE.chat);
+      store.set('ug.aiChat', STATE.aiChat);
+      renderProfile();
+      renderPremiumUI();
+    }
+
+    function currency(n){ return `GHS ${Number(n).toFixed(2)}` }
+
+    /* ========= Custom Confirmation Modal ========= */
+    const confirmModal = $('#confirmModal');
+    function showConfirm({ title, text, onOk, okClass = 'danger' }) {
+        $('#confirmTitle').textContent = title;
+        $('#confirmText').textContent = text;
+        const okBtn = $('#confirmOk');
+        
+        okBtn.className = 'btn';
+        okBtn.classList.add(okClass);
+        
+        $('#confirmOk').addEventListener('click', () => {
+            onOk();
+            confirmModal.close();
+        }, { once: true });
+
+        $('#confirmCancel').addEventListener('click', () => {
+            confirmModal.close();
+        }, { once: true });
+
+        confirmModal.showModal();
+    }
+
+    /* ========= Tabs ========= */
+    const tabs = ['feed', 'ai-chat', 'chat', 'calls', 'profile'];
+    function activateTab(id){
+      tabs.forEach(t=>{
+        const el = $('#tab-'+t);
+        const chip = document.querySelector(`.chip[data-tab="${t}"]`);
+        if(t===id){ el?.classList.remove('hidden'); chip?.classList.add('active'); }
+        else{ el?.classList.add('hidden'); chip?.classList.remove('active'); }
+      });
+    }
+    $$('.chip').forEach(c=> c.addEventListener('click', ()=> activateTab(c.dataset.tab)));
+    
+
+    /* ========= Profile ========= */
+    function renderProfile(){
+      $('#displayName').value = STATE.user.name || '';
+      $('#profName').textContent = STATE.user.name || 'Guest';
+      const isP = isPremium();
+      $('#profStatus').textContent = isP ? 'Premium Member' : 'Free · GHS 1/mo to upgrade';
+      $('#premiumBadge').classList.toggle('hidden', !isP);
+      $('#cancelPremium').classList.toggle('hidden', !isP);
+      const until = isP ? new Date(STATE.user.premiumUntil).toDateString() : '—';
+      $('#premiumInfo').innerHTML = isP
+        ? `🌟 Your Premium is active until <b>${until}</b>.`
+        : `You are on the free plan. Upgrade for just <b>${currency(1)}</b>.`;
+    }
+    function isPremium(){
+      const d = STATE.user.premiumUntil ? new Date(STATE.user.premiumUntil) : null;
+      return !!(d && d.getTime() > Date.now());
+    }
+    $('#saveProfile').addEventListener('click', ()=>{
+      STATE.user.name = $('#displayName').value.trim() || 'Guest';
+      persist();
+      toast('Profile saved ✔️');
+    });
+    $('#logout').addEventListener('click', ()=>{
+        showConfirm({
+            title: 'Logout?',
+            text: 'This will clear all local data and reset your profile.',
+            onOk: () => {
+                localStorage.clear(); // Clear all data for the domain
+                location.reload();
+            }
+        });
+    });
+
+    /* ========= Feed ========= */
+    function avatarFor(name){ return (name||'?').trim().slice(0,2).toUpperCase() }
+    
+    function renderPosts(){
+      const wrap = $('#posts');
+      wrap.innerHTML = ''; // Clear previous posts
+      STATE.posts
+        .slice()
+        .sort((a,b)=> new Date(b.ts)-new Date(a.ts))
+        .forEach(p=>{
+          const postEl = document.createElement('div');
+          postEl.className = 'post';
+
+          const metaEl = document.createElement('div');
+          metaEl.className = 'meta';
+          
+          const avatarEl = document.createElement('div');
+          avatarEl.className = 'avatar';
+          avatarEl.title = p.author;
+          avatarEl.textContent = avatarFor(p.author);
+
+          const authorInfoEl = document.createElement('div');
+          const authorNameEl = document.createElement('div');
+          authorNameEl.style.fontWeight = '800';
+          authorNameEl.textContent = p.author;
+          const postDateEl = document.createElement('div');
+          postDateEl.className = 'muted';
+          postDateEl.style.fontSize = '.85rem';
+          postDateEl.textContent = new Date(p.ts).toLocaleString();
+          authorInfoEl.append(authorNameEl, postDateEl);
+
+          const actionsEl = document.createElement('div');
+          actionsEl.className = 'row';
+          actionsEl.style.marginLeft = 'auto';
+
+          const likeBtn = document.createElement('button');
+          likeBtn.className = 'btn ghost';
+          likeBtn.textContent = `❤️ ${p.likes||0}`;
+          likeBtn.addEventListener('click', () => {
+              p.likes = (p.likes||0)+1;
+              persist(); 
+              renderPosts();
+          });
+
+          const delBtn = document.createElement('button');
+          delBtn.className = 'btn danger';
+          delBtn.textContent = 'Delete';
+          delBtn.addEventListener('click', () => {
+              showConfirm({
+                  title: 'Delete Post?',
+                  text: 'Are you sure you want to delete this post?',
+                  onOk: () => {
+                      STATE.posts = STATE.posts.filter(x => x.id !== p.id);
+                      persist();
+                      renderPosts();
+                  }
+              });
+          });
+
+          actionsEl.append(likeBtn, delBtn);
+          metaEl.append(avatarEl, authorInfoEl, actionsEl);
+
+          const textEl = document.createElement('div');
+          textEl.textContent = p.text;
+
+          postEl.appendChild(metaEl);
+          postEl.appendChild(textEl);
+
+          if (p.img) {
+              const imgEl = document.createElement('img');
+              imgEl.src = p.img;
+              imgEl.alt = 'post image';
+              imgEl.style.cssText = 'width:100%;border-radius:12px;border:1px solid #e3ecf8';
+              postEl.appendChild(imgEl);
+          }
+          
+          wrap.appendChild(postEl);
+        });
+    }
+
+    $('#feedForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const text = $('#postText').value.trim();
+      const file = $('#postImage').files[0];
+      if(!text && !file){ return toast('Write something or attach an image ❗'); }
+      let base64 = '';
+      if(file){
+        const limitMB = isPremium() ? 8 : 2;
+        if(file.size > limitMB*1024*1024){
+          return toast(`Image too large. Limit ${limitMB}MB${isPremium()?' (Premium)':''}.`);
+        }
+        base64 = await toBase64(file);
+      }
+      STATE.posts.push({ id:uid(), author: STATE.user.name || 'Guest', text, img:base64, ts: today(), likes:0 });
+      $('#postText').value=''; $('#postImage').value='';
+      persist(); renderPosts();
+    });
+    const toBase64 = f => new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(f); });
+
+    /* ========= AI Chat (Upgraded with Gemini API) ========= */
+    const aiMessagesEl = $('#aiMessages');
+
+    async function getAIResponse(prompt) {
+        const apiKey = ""; // Leave empty, will be handled by the environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        
+        // Give the AI a persona and context
+        const fullPrompt = `You are a friendly and helpful AI assistant for students of the University of Ghana (UG). Your name is 'UG Assistant'. Answer the following question concisely and accurately:\n\n${prompt}`;
+
+        const payload = {
+            contents: [{
+                parts: [{ text: fullPrompt }]
+            }]
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed with status ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.candidates && result.candidates.length > 0 &&
+                result.candidates[0].content && result.candidates[0].content.parts &&
+                result.candidates[0].content.parts.length > 0) {
+                return result.candidates[0].content.parts[0].text;
+            } else {
+                return "Sorry, I couldn't generate a response. Please try again.";
+            }
+        } catch (error) {
+            console.error("Error fetching from Gemini API:", error);
+            return "Sorry, I'm having trouble connecting to my brain right now. Please check your internet connection and try again.";
+        }
+    }
+
+    function renderAiMessages() {
+        aiMessagesEl.innerHTML = '';
+        STATE.aiChat.forEach(m => {
+            const div = document.createElement('div');
+            div.className = `bubble ${m.sender}`; // 'me' or 'ai'
+            
+            const authorDiv = document.createElement('div');
+            authorDiv.style.fontWeight = '700';
+            authorDiv.textContent = m.sender === 'me' ? (STATE.user.name || 'You') : 'AI Assistant';
+
+            if (m.isLoading) {
+                div.classList.add('loading');
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.className = 'dot-flashing';
+                div.append(authorDiv, loadingIndicator);
+            } else {
+                const textDiv = document.createElement('div');
+                textDiv.textContent = m.text;
+                div.append(authorDiv, textDiv);
+            }
+            aiMessagesEl.appendChild(div);
+        });
+        aiMessagesEl.scrollTop = aiMessagesEl.scrollHeight;
+    }
+
+    $('#aiChatForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const input = $('#aiMessageInput');
+        const button = form.querySelector('button');
+        const text = input.value.trim();
+        if (!text) return;
+
+        // Disable form while processing
+        input.disabled = true;
+        button.disabled = true;
+
+        // Add user message
+        STATE.aiChat.push({ sender: 'me', text: text });
+        // Add loading indicator
+        STATE.aiChat.push({ sender: 'ai', isLoading: true });
+        renderAiMessages();
+        input.value = '';
+
+        const aiResponse = await getAIResponse(text);
+        
+        // Remove loading indicator
+        STATE.aiChat.pop();
+        // Add AI response
+        STATE.aiChat.push({ sender: 'ai', text: aiResponse });
+        persist();
+        renderAiMessages();
+
+        // Re-enable form
+        input.disabled = false;
+        button.disabled = false;
+        input.focus();
+    });
+
+
+    /* ========= Student Chat ========= */
+    const messagesEl = $('#messages');
+    function renderRoomHeader(){ $('#chatHeader').innerHTML = `Room: <b>${$('#roomSelect').value}</b>`; }
+    function renderMessages(){
+      const room = $('#roomSelect').value;
+      messagesEl.innerHTML = '';
+      (STATE.chat[room]||[]).forEach(m=>{
+        const div = document.createElement('div');
+        div.className = 'bubble ' + (m.author===STATE.user.name ? 'me':'' );
+        
+        const authorDiv = document.createElement('div');
+        authorDiv.style.fontWeight = '700';
+        authorDiv.textContent = m.author;
+
+        const textDiv = document.createElement('div');
+        textDiv.textContent = m.text;
+
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'muted';
+        timeDiv.style.cssText = 'font-size:.75rem;margin-top:4px';
+        timeDiv.textContent = new Date(m.ts).toLocaleTimeString();
+
+        div.append(authorDiv, textDiv, timeDiv);
+        messagesEl.appendChild(div);
+      });
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+    $('#roomSelect').addEventListener('change', ()=>{ renderRoomHeader(); renderMessages(); });
+    $('#chatForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = ($('#chatName').value.trim() || STATE.user.name || 'Guest');
+      const text = $('#messageInput').value.trim();
+      if(!text) return;
+      const room = $('#roomSelect').value;
+      STATE.chat[room] = (STATE.chat[room]||[]);
+      STATE.chat[room].push({ id:uid(), author: name, text, ts: today() });
+      $('#messageInput').value='';
+      persist(); renderMessages();
+    });
+    $('#clearChat').addEventListener('click', ()=>{
+      const room = $('#roomSelect').value;
+      showConfirm({
+          title: `Clear Chat in "${room}"?`,
+          text: 'All messages in this room will be permanently deleted.',
+          onOk: () => {
+              STATE.chat[room]=[];
+              persist();
+              renderMessages();
+          }
+      });
+    });
+
+    /* ========= Premium (mock) ========= */
+    const premiumModal = $('#premiumModal');
+    function renderPremiumUI(){
+      const isP = isPremium();
+      $('#premiumBadge').classList.toggle('hidden', !isP);
+      $('#cancelPremium').classList.toggle('hidden', !isP);
+    }
+    $('#openPremium').addEventListener('click', ()=> premiumModal.showModal());
+    $('#openPremium2').addEventListener('click', ()=> premiumModal.showModal());
+    $('#closePremium').addEventListener('click', ()=> premiumModal.close());
+    $('#confirmPay').addEventListener('click', ()=>{
+      const until = new Date(Date.now() + 30*24*60*60*1000);
+      STATE.user.premiumUntil = until.toISOString();
+      persist();
+      $('#payMsg').textContent = `Payment successful ✔️ Premium active until ${until.toDateString()}.`;
+      setTimeout(()=> {
+          premiumModal.close();
+          $('#payMsg').textContent = '';
+      }, 1200);
+    });
+    $('#cancelPremium').addEventListener('click', ()=>{
+      showConfirm({
+          title: 'Cancel Premium?',
+          text: 'This will end your premium subscription immediately.',
+          onOk: () => {
+              STATE.user.premiumUntil = null;
+              persist();
+              toast('Premium cancelled.');
+          }
+      });
+    });
+
+    /* ========= Calls: WebRTC (copy‑paste signaling) ========= */
+    let pc, localStream;
+    const config = { iceServers: [{urls:'stun:stun.l.google.com:19302'}] };
+
+    async function ensureMedia(){
+      if(localStream) return;
+      try{
+        localStream = await navigator.mediaDevices.getUserMedia({ audio:true, video:false });
+        $('#localAudio').srcObject = localStream;
+        $('#btnEnd').disabled = false;
+        toast('Microphone ready ✔️');
+      }catch(err){
+        console.error(err);
+        toast('Microphone permission denied ❗');
+      }
+    }
+    $('#btnStartMedia').addEventListener('click', ensureMedia);
+
+    function createPC(){
+      if(pc) pc.close();
+      pc = new RTCPeerConnection(config);
+      pc.onicecandidate = e=>{
+        if(e.candidate) return;
+      };
+      pc.onconnectionstatechange = ()=> {
+        if(pc.connectionState==='connected') toast('Call connected ✔️');
+        if(pc.connectionState==='failed' || pc.connectionState==='disconnected') toast('Call ended.');
+      };
+      pc.ontrack = e=> $('#remoteAudio').srcObject = e.streams[0];
+      if(localStream){
+        localStream.getTracks().forEach(t=> pc.addTrack(t, localStream));
+      }
+    }
+
+    $('#btnCreateOffer').addEventListener('click', async ()=>{
+      await ensureMedia();
+      createPC();
+      const offer = await pc.createOffer({ offerToReceiveAudio:true });
+      await pc.setLocalDescription(offer);
+      $('#offerOut').value = JSON.stringify(offer);
+      toast('Offer created. Share it with your friend.');
+    });
+    $('#btnCopyOffer').addEventListener('click', ()=>{
+      navigator.clipboard.writeText($('#offerOut').value).then(()=> toast('Offer copied ✔️'));
+    });
+    $('#btnSetAnswer').addEventListener('click', async ()=>{
+      try{
+        const answer = JSON.parse($('#answerIn').value.trim());
+        await pc.setRemoteDescription(answer);
+        toast('Answer set. Connecting…');
+      }catch{ toast('Invalid answer JSON ❗'); }
+    });
+
+    $('#btnCreateAnswer').addEventListener('click', async ()=>{
+      await ensureMedia();
+      createPC();
+      try{
+        const offer = JSON.parse($('#offerIn').value.trim());
+        await pc.setRemoteDescription(offer);
+        const answer = await pc.createAnswer();
+        await pc.setLocalDescription(answer);
+        $('#answerOut').value = JSON.stringify(answer);
+        toast('Answer created. Send it back to your friend.');
+      }catch(err){ console.error(err); toast('Invalid offer JSON ❗'); }
+    });
+    $('#btnCopyAnswer').addEventListener('click', ()=>{
+      navigator.clipboard.writeText($('#answerOut').value).then(()=> toast('Answer copied ✔️'));
+    });
+    $('#btnEnd').addEventListener('click', ()=>{
+      if(pc){ pc.getSenders().forEach(s=> s.track && s.track.stop()); pc.close(); pc=null; }
+      if(localStream){ localStream.getTracks().forEach(t=> t.stop()); localStream=null; }
+      $('#btnEnd').disabled = true;
+      toast('Call ended.');
+    });
+
+    const telNumber = $('#telNumber'), telLink = $('#telLink');
+    function updateTel(){
+      const n = telNumber.value.replace(/\s+/g,'');
+      telLink.href = n ? `tel:${n}` : '#';
+    }
+    telNumber.addEventListener('input', updateTel);
+
+    /* ========= Small bits ========= */
+    function toast(msg){
+      const el = document.createElement('div');
+      el.textContent = msg;
+      Object.assign(el.style,{
+        position:'fixed',bottom:'24px',left:'50%',transform:'translateX(-50%)',
+        background:'#0a3b6d',color:'#fff',padding:'10px 14px',borderRadius:'10px',
+        boxShadow:'0 8px 20px rgba(0,0,0,.25)',zIndex:9999,opacity:0,transition:'opacity .2s, transform .2s'
+      });
+      document.body.appendChild(el);
+      requestAnimationFrame(()=>{ el.style.opacity=1; el.style.transform='translateX(-50%) translateY(-6px)'; });
+      setTimeout(()=>{ el.style.opacity=0; el.style.transform='translateX(-50%) translateY(0)'; setTimeout(()=> el.remove(), 250); }, 2000);
+    }
+
+    $('#displayName').addEventListener('input', e=> $('#chatName').placeholder = e.target.value || 'Guest');
+
+    if(!STATE.user.name) { STATE.user.name = 'Guest'; }
+
+    // Initial renders
+    persist();
+    renderPosts();
+    renderMessages();
+    renderRoomHeader();
+    renderAiMessages();
+    activateTab('feed'); // Start on the feed tab
+
+    const heroImages = [
+      "https://upload.wikimedia.org/wikipedia/commons/5/5b/Balme_Library_at_University_of_Ghana_-_Legon.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/9/9c/Entrance_to_Commonwealth_Hall_Legon_4.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/3/31/Balme_Library.JPG"
+    ];
+    let heroIdx = 0;
+    setInterval(()=>{ heroIdx = (heroIdx+1)%heroImages.length; $('#heroImg').src = heroImages[heroIdx]; }, 7000);
+  </script>
+</body>
+</html>

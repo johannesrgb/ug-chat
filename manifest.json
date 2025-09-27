@@ -1,0 +1,21 @@
+{
+  "name": "UG CHAT",
+  "short_name": "UGChat",
+  "description": "Blue & White Campus Social for University of Ghana.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eef6ff",
+  "theme_color": "#0A66C2",
+  "icons": [
+    {
+      "src": "https://api.dicebear.com/8.x/initials/svg?seed=UG&backgroundType=gradientLinear&backgroundColor=0a66c2,0957a7&radius=10&size=192",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://api.dicebear.com/8.x/initials/svg?seed=UG&backgroundType=gradientLinear&backgroundColor=0a66c2,0957a7&radius=10&size=512",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ]
+}
